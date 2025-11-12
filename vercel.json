@@ -1,4 +1,9 @@
 {
   "version": 2,
-  "outputDirectory": "dist"
+  "buildCommand": "npm run build:vercel",
+  "outputDirectory": "dist",
+  "framework": "none",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
