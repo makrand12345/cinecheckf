@@ -1,8 +1,11 @@
 {
   "version": 2,
   "buildCommand": "ng build --configuration production",
-  "outputDirectory": "dist/cinecheckf/browser",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+  "outputDirectory": "dist/browser",
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
   ]
 }
