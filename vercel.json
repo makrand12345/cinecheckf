@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "buildCommand": "npm run build:vercel",
-  "outputDirectory": "dist",
-  "framework": "none",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  "builds": [
+    { "src": "angular.json", "use": "@vercel/static-build" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/index.html" }
+  ],
+  "outputDirectory": "dist"
 }
