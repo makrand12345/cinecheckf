@@ -5,7 +5,7 @@ import { MovieDetails } from './components/movie-details/movie-details';
 import { Search } from './components/search/search';
 import { UserProfile } from './components/user-profile/user-profile';
 import { SubmitMovie } from './components/submit-movie/submit-movie';
-import { AdminPanel } from './components/admin/admin'; // Create this component
+import { AdminPanel } from './components/admin/admin'; 
 
 export const routes: Routes = [
   { path: '', component: MovieList },

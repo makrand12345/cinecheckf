@@ -2,10 +2,9 @@
   "version": 2,
   "buildCommand": "ng build --configuration production --output-path dist/browser --base-href /",
   "outputDirectory": "dist/browser",
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ]
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
 }
