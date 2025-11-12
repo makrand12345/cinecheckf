@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+     "build:vercel": "ng build --configuration production && Move-Item -Path \"dist/browser/browser/*\" -Destination \"dist/browser/\" -Force && Remove-Item -Path \"dist/browser/browser\" -Recurse -Force",
      "dev": "ng serve",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"

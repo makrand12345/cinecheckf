@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "buildCommand": "ng build",
-  "outputDirectory": "dist/cinecheckf/browser",
+  "buildCommand": "npm run build:vercel",
+  "outputDirectory": "dist/browser",
   "routes": [
     {
       "src": "/(.*)",
