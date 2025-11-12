@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+     "dev": "ng serve",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -46,4 +47,5 @@
     "typescript": "~5.9.2",
     "zone.js": "^0.15.1"
   }
+  
 }
