@@ -1,0 +1,108 @@
+<div class="submit-movie-container">
+    <div class="container">
+        <div class="submit-header">
+            <h1>Submit a Movie</h1>
+            <p>Suggest a movie to be added to our collection. Admin approval required.</p>
+        </div>
+
+        <form class="submit-form" (ngSubmit)="submitMovie()" #movieForm="ngForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Movie Title *</label>
+                    <input type="text" [(ngModel)]="movieData.title" name="title" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea [(ngModel)]="movieData.description" name="description" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Genres *</label>
+                    <div class="genres-select">
+                        @for (genre of availableGenres; track genre) {
+                            <label class="genre-checkbox">
+                                <input type="checkbox" 
+                                       [value]="genre" 
+                                       (change)="toggleGenre(genre, $event)"
+                                       [checked]="movieData.genres.includes(genre)">
+                                {{ genre }}
+                            </label>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Release Date</label>
+                    <input type="date" [(ngModel)]="movieData.release_date" name="release_date">
+                </div>
+
+                <div class="form-group">
+                    <label>Duration (minutes)</label>
+                    <input type="number" [(ngModel)]="movieData.duration" name="duration">
+                </div>
+
+                <div class="form-group">
+                    <label>Director</label>
+                    <input type="text" [(ngModel)]="movieData.director" name="director">
+                </div>
+
+                <div class="form-group">
+                    <label>Language</label>
+                    <input type="text" [(ngModel)]="movieData.language" name="language">
+                </div>
+
+                <div class="form-group">
+                    <label>Country</label>
+                    <input type="text" [(ngModel)]="movieData.country" name="country">
+                </div>
+
+                <div class="form-group">
+                    <label>Age Rating</label>
+                    <select [(ngModel)]="movieData.age_rating" name="age_rating">
+                        <option value="">Select Rating</option>
+                        <option value="G">G</option>
+                        <option value="PG">PG</option>
+                        <option value="PG-13">PG-13</option>
+                        <option value="R">R</option>
+                        <option value="NC-17">NC-17</option>
+                    </select>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Poster URL</label>
+                    <input type="url" [(ngModel)]="movieData.poster_url" name="poster_url" placeholder="https://example.com/poster.jpg">
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Trailer URL</label>
+                    <input type="url" [(ngModel)]="movieData.trailer_url" name="trailer_url" placeholder="https://youtube.com/watch?v=...">
+                </div>
+            </div>
+
+            @if (error) {
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {{ error }}
+                </div>
+            }
+
+            @if (success) {
+                <div class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    {{ success }}
+                </div>
+            }
+
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" (click)="resetForm()">Reset</button>
+                <button type="submit" class="submit-btn" [disabled]="submitting || !movieForm.form.valid">
+                    @if (submitting) {
+                        <i class="fas fa-spinner fa-spin"></i>
+                    }
+                    Submit Movie
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

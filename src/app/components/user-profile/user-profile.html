@@ -1,0 +1,133 @@
+<div class="profile-container">
+    <div class="container">
+        @if (loading) {
+            <div class="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading profile...</p>
+            </div>
+        } @else if (user) {
+
+
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    @if (user.profile_picture) {
+                        <img [src]="user.profile_picture" [alt]="user.username">
+                    } @else {
+                        <div class="avatar-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    }
+                </div>
+                
+                <div class="profile-info">
+                    <h1>{{ user.username }}</h1>
+                    <p class="user-email">{{ user.email }}</p>
+                    
+                    <!-- BIO DISPLAY -->
+                    @if (user.bio && user.bio.trim() !== '') {
+                        <p class="user-bio">{{ user.bio }}</p>
+                    } @else {
+                        <p class="no-bio">No bio added yet. <em>Click "Edit Profile" to add one!</em></p>
+                    }
+                    
+                    <span class="user-role">{{ user.role }}</span>
+                    
+                    @if (isOwnProfile) {
+                        <button class="edit-btn" (click)="editMode = !editMode">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+                    }
+                </div>
+            </div>
+
+            @if (editMode) {
+                <div class="edit-profile-form">
+                    <h2>Edit Profile</h2>
+                    <form (ngSubmit)="updateProfile()">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" [(ngModel)]="editUser.username" name="username" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Profile Picture URL</label>
+                            <input type="url" [(ngModel)]="editUser.profile_picture" name="profile_picture">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Bio</label>
+                            <textarea [(ngModel)]="editUser.bio" name="bio" placeholder="Tell us about yourself..." rows="4"></textarea>
+                            <small>Write something about yourself and your movie preferences</small>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+                            <button type="submit" class="save-btn" [disabled]="updating">
+                                @if (updating) {
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                }
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            }
+
+            <div class="profile-stats">
+                <div class="stat-card">
+                    <i class="fas fa-film"></i>
+                    <div class="stat-info">
+                        <h3>{{ submittedMovies.length }}</h3>
+                        <p>Movies Submitted</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <i class="fas fa-star"></i>
+                    <div class="stat-info">
+                        <h3>{{ ratedMovies.length }}</h3>
+                        <p>Movies Rated</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submitted Movies Section -->
+            <div class="profile-section">
+                <h2>Submitted Movies</h2>
+                @if (submittedMovies.length > 0) {
+                    <div class="movies-grid">
+                        @for (movie of submittedMovies; track movie.id) {
+                            <div class="movie-card-with-status">
+                                <app-movie-card [movie]="movie"></app-movie-card>
+                                <div class="movie-status" [class]="movie.status">
+                                    {{ movie.status }}
+                                </div>
+                            </div>
+                        }
+                    </div>
+                } @else {
+                    <p class="no-data">No movies submitted yet.</p>
+                }
+            </div>
+
+            <!-- Rated Movies Section -->
+            <div class="profile-section">
+                <h2>Recently Rated Movies</h2>
+                @if (ratedMovies.length > 0) {
+                    <div class="movies-grid">
+                        @for (movie of ratedMovies; track movie.id) {
+                            <app-movie-card [movie]="movie"></app-movie-card>
+                        }
+                    </div>
+                } @else {
+                    <p class="no-data">No movies rated yet.</p>
+                }
+            </div>
+        } @else if (error) {
+            <div class="error-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>{{ error }}</p>
+            </div>
+        }
+    </div>
+</div>

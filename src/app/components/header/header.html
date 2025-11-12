@@ -1,0 +1,102 @@
+<header class="header">
+    <div class="container">
+        <div class="logo" (click)="navigateTo('home')">
+            <i class="fas fa-film"></i>
+            <h1>CineCheck</h1>
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" 
+                   [(ngModel)]="searchQuery" 
+                   (keyup.enter)="onSearch()"
+                   placeholder="Search movies...">
+            <button class="search-btn" (click)="onSearch()">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+        
+        <nav class="nav">
+            <button class="nav-btn" (click)="navigateTo('home')" 
+                    [class.active]="currentView() === 'home'">
+                <i class="fas fa-home"></i>
+                Home
+            </button>
+            <button class="nav-btn" (click)="navigateTo('movies')"
+                    [class.active]="currentView() === 'movies'">
+                <i class="fas fa-film"></i>
+                Movies
+            </button>
+            
+            <!-- Submit Movie Button (for all logged-in users) -->
+            @if (isLoggedIn()) {
+                <button class="nav-btn" (click)="navigateTo('submit-movie')"
+                        [class.active]="currentView() === 'submit-movie'">
+                    <i class="fas fa-plus-circle"></i>
+                    Submit Movie
+                </button>
+            }
+            
+            <!-- Search Button (Mobile) -->
+            <button class="nav-btn mobile-search-btn" (click)="toggleSearch()">
+                <i class="fas fa-search"></i>
+            </button>
+            
+            @if (isLoggedIn()) {
+                <div class="user-menu">
+                    <!-- Profile Dropdown -->
+                    <div class="profile-dropdown">
+                        <button class="profile-btn">
+                            <i class="fas fa-user-circle"></i>
+                            {{ currentUser()?.username }}
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a (click)="navigateTo('profile')" class="dropdown-item">
+                                <i class="fas fa-user"></i> My Profile
+                            </a>
+                            <a (click)="navigateTo('submit-movie')" class="dropdown-item">
+                                <i class="fas fa-plus-circle"></i> Submit Movie
+                            </a>
+                            @if (currentUser()?.role === 'admin') {
+                                <a (click)="navigateTo('admin')" class="dropdown-item">
+                                    <i class="fas fa-cog"></i> Admin Panel
+                                </a>
+                            }
+                            <div class="dropdown-divider"></div>
+                            <a (click)="handleLogout()" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            } @else {
+                <button class="nav-btn" (click)="navigateTo('auth')"
+                        [class.active]="currentView() === 'auth'">
+                    <i class="fas fa-user"></i>
+                    Login
+                </button>
+            }
+        </nav>
+    </div>
+    
+    <!-- Mobile Search Bar -->
+    @if (showMobileSearch) {
+        <div class="mobile-search-container">
+            <div class="container">
+                <div class="mobile-search-bar">
+                    <input type="text" 
+                           [(ngModel)]="searchQuery" 
+                           (keyup.enter)="onSearch()"
+                           placeholder="Search movies...">
+                    <button class="search-btn" (click)="onSearch()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="close-search" (click)="toggleSearch()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</header>

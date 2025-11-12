@@ -1,0 +1,109 @@
+<div class="movie-details-container">
+    <div class="container">
+        @if (loading) {
+            <div class="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading movie details...</p>
+            </div>
+        } @else if (movie) {
+            <div class="movie-header">
+                <button class="back-btn" (click)="goBack()">
+                    <i class="fas fa-arrow-left"></i> Back to Movies
+                </button>
+                
+                <div class="movie-hero">
+                    <div class="movie-poster-large">
+                        <img [src]="movie.poster_url" [alt]="movie.title">
+                    </div>
+                    
+                    <div class="movie-info-large">
+                        <h1>{{ movie.title }}</h1>
+                        <div class="movie-meta">
+                            <span class="rating"><i class="fas fa-star"></i> {{ movie.rating || 'N/A' }}</span>
+                            <span class="duration"><i class="fas fa-clock"></i> {{ movie.duration }} min</span>
+                            <span class="year"><i class="fas fa-calendar"></i> {{ getYear(movie.release_date) }}</span>
+                            <span class="age-rating">{{ movie.age_rating }}</span>
+                        </div>
+                        
+                        <div class="genres">
+                            @for (genre of movie.genres; track genre) {
+                                <span class="genre-tag">{{ genre }}</span>
+                            }
+                        </div>
+                        
+                        <p class="description">{{ movie.description }}</p>
+                        
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <strong>Director:</strong> {{ movie.director }}
+                            </div>
+                            <div class="detail-item">
+                                <strong>Language:</strong> {{ movie.language }}
+                            </div>
+                            <div class="detail-item">
+                                <strong>Country:</strong> {{ movie.country }}
+                            </div>
+                        </div>
+                        
+                        @if (movie.trailer_url) {
+                            <button class="trailer-btn" (click)="openTrailer()">
+                                <i class="fas fa-play"></i> Watch Trailer
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rating Section -->
+            <div class="rating-section">
+                <h2>Rate this Movie</h2>
+                <div class="rating-form">
+                    <div class="stars">
+                        @for (star of [1,2,3,4,5]; track star) {
+                            <i class="fas fa-star" 
+                               [class.filled]="star <= selectedRating"
+                               (click)="setRating(star)"></i>
+                        }
+                    </div>
+                    <textarea [(ngModel)]="reviewText" placeholder="Write your review (optional)" class="review-textarea"></textarea>
+                    <button class="submit-rating-btn" (click)="submitRating()" [disabled]="!selectedRating">
+                        Submit Rating
+                    </button>
+                </div>
+            </div>
+
+            <!-- Reviews Section -->
+            <div class="reviews-section">
+                <h2>User Reviews ({{ movie.ratings?.length || 0 }})</h2>
+                @if (movie.ratings && movie.ratings.length > 0) {
+                    <div class="reviews-list">
+                        @for (review of movie.ratings; track review.user_id) {
+                            <div class="review-card">
+                                <div class="review-header">
+                                    <strong>{{ review.username }}</strong>
+                                    <div class="review-rating">
+                                        @for (star of [1,2,3,4,5]; track star) {
+                                            <i class="fas fa-star" [class.filled]="star <= review.rating"></i>
+                                        }
+                                    </div>
+                                </div>
+                                @if (review.review) {
+                                    <p class="review-text">{{ review.review }}</p>
+                                }
+                                <small class="review-date">{{ formatDate(review.created_at) }}</small>
+                            </div>
+                        }
+                    </div>
+                } @else {
+                    <p class="no-reviews">No reviews yet. Be the first to rate this movie!</p>
+                }
+            </div>
+        } @else if (error) {
+            <div class="error-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>{{ error }}</p>
+                <button class="retry-btn" (click)="retryLoadMovie()">Try Again</button>
+            </div>
+        }
+    </div>
+</div>

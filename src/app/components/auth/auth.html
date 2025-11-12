@@ -1,0 +1,66 @@
+<div class="auth-container">
+    <div class="auth-card">
+        <h2>{{ isLoginMode ? 'Welcome Back' : 'Join CineCheck' }}</h2>
+        
+        <form class="auth-form" (ngSubmit)="onSubmit()">
+            @if (!isLoginMode) {
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" [(ngModel)]="credentials.username" 
+                           name="username" required placeholder="Enter your username">
+                </div>
+            }
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" [(ngModel)]="credentials.email" 
+                       name="email" required placeholder="Enter your email">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" [(ngModel)]="credentials.password" 
+                       name="password" required placeholder="Enter your password">
+            </div>
+
+            @if (!isLoginMode) {
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" 
+                           [(ngModel)]="confirmPassword" name="confirmPassword" required 
+                           placeholder="Confirm your password">
+                </div>
+            }
+
+            @if (error) {
+                <div class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ error }}
+                </div>
+            }
+
+            @if (success) {
+                <div class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    {{ success }}
+                </div>
+            }
+
+            <button type="submit" class="auth-btn" [disabled]="loading">
+                @if (loading) {
+                    <i class="fas fa-spinner fa-spin"></i>
+                }
+                {{ isLoginMode ? 'Sign In' : 'Sign Up' }}
+            </button>
+        </form>
+
+        <div class="auth-switch">
+            <p>
+                {{ isLoginMode ? "Don't have an account?" : "Already have an account?" }}
+                <button type="button" class="switch-btn" (click)="toggleMode()">
+                    {{ isLoginMode ? 'Sign Up' : 'Sign In' }}
+                </button>
+            </p>
+        </div>
+    </div>
+</div>

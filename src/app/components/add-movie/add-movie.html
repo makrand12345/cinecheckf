@@ -1,0 +1,128 @@
+<div class="add-movie-container">
+    <div class="container">
+        <div class="section-header">
+            <h2>Add New Movie</h2>
+            <p>Share your favorite movie with the community</p>
+        </div>
+
+        <div class="add-movie-card">
+            <form class="movie-form" (ngSubmit)="onSubmit()">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="title">Movie Title *</label>
+                        <input type="text" id="title" [(ngModel)]="movie.title" 
+                               name="title" required placeholder="Enter movie title">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="director">Director</label>
+                        <input type="text" id="director" [(ngModel)]="movie.director" 
+                               name="director" placeholder="Enter director name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description *</label>
+                    <textarea id="description" [(ngModel)]="movie.description" 
+                              name="description" required rows="4" 
+                              placeholder="Enter movie description"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="release_date">Release Date</label>
+                        <input type="date" id="release_date" [(ngModel)]="movie.release_date" 
+                               name="release_date">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="duration">Duration (minutes)</label>
+                        <input type="number" id="duration" [(ngModel)]="movie.duration" 
+                               name="duration" placeholder="Duration in minutes">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="language">Language</label>
+                        <input type="text" id="language" [(ngModel)]="movie.language" 
+                               name="language" placeholder="Movie language">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <input type="text" id="country" [(ngModel)]="movie.country" 
+                               name="country" placeholder="Production country">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="age_rating">Age Rating</label>
+                    <select id="age_rating" [(ngModel)]="movie.age_rating" name="age_rating">
+                        <option value="">Select rating</option>
+                        <option value="G">G</option>
+                        <option value="PG">PG</option>
+                        <option value="PG-13">PG-13</option>
+                        <option value="R">R</option>
+                        <option value="NC-17">NC-17</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Genres *</label>
+                    <div class="genres-grid">
+                        @for (genre of availableGenres; track genre) {
+                            <label class="genre-checkbox">
+                                <input type="checkbox" [value]="genre" 
+                                       [checked]="movie.genres.includes(genre)"
+                                       (change)="toggleGenre(genre, $event)">
+                                {{ genre }}
+                            </label>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="poster_url">Poster URL</label>
+                        <input type="url" id="poster_url" [(ngModel)]="movie.poster_url" 
+                               name="poster_url" placeholder="https://example.com/poster.jpg">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="trailer_url">Trailer URL</label>
+                        <input type="url" id="trailer_url" [(ngModel)]="movie.trailer_url" 
+                               name="trailer_url" placeholder="https://example.com/trailer">
+                    </div>
+                </div>
+
+                @if (error) {
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        {{ error }}
+                    </div>
+                }
+
+                @if (success) {
+                    <div class="success-message">
+                        <i class="fas fa-check-circle"></i>
+                        {{ success }}
+                    </div>
+                }
+
+                <div class="form-actions">
+                    <button type="button" class="btn secondary" (click)="resetForm()">
+                        <i class="fas fa-redo"></i>
+                        Reset
+                    </button>
+                    <button type="submit" class="btn primary" [disabled]="loading">
+                        @if (loading) {
+                            <i class="fas fa-spinner fa-spin"></i>
+                        }
+                        Add Movie
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

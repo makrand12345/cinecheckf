@@ -1,0 +1,64 @@
+<div class="home-container">
+    <div class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Welcome to CineCheck</h1>
+                <p class="hero-subtitle">Discover, Rate, and Share Your Favorite Movies</p>
+                <div class="hero-buttons">
+                    <button class="btn primary" (click)="navigateToMovies()">
+                        <i class="fas fa-film"></i>
+                        Browse Movies
+                    </button>
+                    @if (!isLoggedIn()) {
+                        <button class="btn secondary" (click)="navigateToAuth()">
+                            <i class="fas fa-user-plus"></i>
+                            Join Now
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="features-section">
+        <div class="container">
+            <h2>Why Choose CineCheck?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-star"></i>
+                    <h3>Rate Movies</h3>
+                    <p>Share your opinions and rate your favorite films</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-search"></i>
+                    <h3>Discover</h3>
+                    <p>Find new movies based on your preferences</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Community</h3>
+                    <p>Join a community of movie enthusiasts</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat">
+                    <h3>{{ moviesCount() }}+</h3>
+                    <p>Movies</p>
+                </div>
+                <div class="stat">
+                    <h3>100+</h3>
+                    <p>Users</p>
+                </div>
+                <div class="stat">
+                    <h3>500+</h3>
+                    <p>Reviews</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
