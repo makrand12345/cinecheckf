@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "buildCommand": "cd cinecheckf && npm run build -- --configuration production --output-path dist/browser --base-href /",
-  "outputDirectory": "cinecheckf/dist/browser",
+  "buildCommand": "ng build --configuration production --output-path dist/browser --base-href /",
+  "outputDirectory": "dist/browser",
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/cinecheckf/index.html"
+      "dest": "/index.html"
     }
   ]
 }
