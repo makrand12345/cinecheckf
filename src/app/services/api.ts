@@ -36,7 +36,7 @@ export interface MovieOut {
 
 @Injectable({ providedIn: 'root' })
 export class Api {
-private apiUrl = 'https://your-railway-backend-url.up.railway.app/api/v1';
+private apiUrl = 'https://cinecheckb.onrender.com/api/v1';
 
   // ===== AUTH =====
   async signup(userData: any): Promise<any> {
