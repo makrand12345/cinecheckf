@@ -7,7 +7,16 @@
   "outputDirectory": "dist/browser",
   "routes": [
     {
-      "handle": "filesystem"
+      "src": "/main.js",
+      "headers": {
+        "Content-Type": "application/javascript"
+      }
+    },
+    {
+      "src": "/runtime.js", 
+      "headers": {
+        "Content-Type": "application/javascript"
+      }
     },
     {
       "src": "/(.*)",
