@@ -11,20 +11,25 @@
       "prefix": "app",
       "architect": {
         "build": {
-  "builder": "@angular-devkit/build-angular:browser",
-  "options": {
-    "outputPath": "dist/browser",
-    "index": "src/index.html",
-    "main": "src/main.ts",
-    "tsConfig": "tsconfig.app.json",
-    "assets": [
-      "src/favicon.ico",
-      "src/assets"
-    ],
-    "styles": [
-      "src/styles.css"
-    ],
-    "baseHref": "/"
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/browser",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "public",
+                "output": "/"
+              }
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "baseHref": "/"
           },
           "configurations": {
             "production": {
@@ -68,11 +73,8 @@
           "options": {
             "tsConfig": "tsconfig.spec.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public",
-                "output": "/"
-              }
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
               "src/styles.css"
