@@ -4,8 +4,14 @@
     { "src": "package.json", "use": "@vercel/static-build" }
   ],
   "buildCommand": "npm run build:vercel",
-  "outputDirectory": "dist/browser/browser",
+  "outputDirectory": "dist/browser",
   "routes": [
-    { "src": "/(.*)", "dest": "/index.html" }
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
   ]
 }
