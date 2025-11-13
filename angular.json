@@ -34,11 +34,11 @@
             "production": {
               "budgets": [
                     {
-                      "type": "bundle",
-                      "maximumWarning": "500kb",
-                      "maximumError": "1mb"
-            }
-                         ],
+    "type": "bundle",
+    "maximumWarning": "500kb",
+    "maximumError": "1mb"
+  }
+],
 
               "optimization": true,
               "sourceMap": false,
