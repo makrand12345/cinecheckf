@@ -14,9 +14,10 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist",
+            "browser": "src/main.ts",
             "index": "src/index.html",
-            "main": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
+
             "assets": [
               {
                 "glob": "**/*",
@@ -32,11 +33,13 @@
           "configurations": {
             "production": {
               "budgets": [
-                {
-                  "type": "bundle",
-                  "maximumSize": "500kb"
-                }
-              ],
+                    {
+                      "type": "bundle",
+                      "maximumWarning": "500kb",
+                      "maximumError": "1mb"
+            }
+                         ],
+
               "optimization": true,
               "sourceMap": false,
               "extractLicenses": true
