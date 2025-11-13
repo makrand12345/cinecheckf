@@ -11,46 +11,43 @@
       "prefix": "app",
       "architect": {
         "build": {
-  "builder": "@angular-devkit/build-angular:application",
+  "builder": "@angular-devkit/build-angular:browser",
   "options": {
     "outputPath": "dist/browser",
-    "browser": "src/main.ts",
     "index": "src/index.html",
+    "main": "src/main.ts",
     "tsConfig": "tsconfig.app.json",
     "assets": [
-      {
-        "glob": "**/*",
-        "input": "public",
-        "output": "/"
-      }
+      "src/favicon.ico",
+      "src/assets"
     ],
     "styles": [
       "src/styles.css"
     ],
     "baseHref": "/"
-  },
-  "configurations": {
-    "production": {
-      "budgets": [
-        {
-          "type": "bundle",
-          "maximumWarning": "500kb",
-          "maximumError": "1mb"
-        }
-      ],
-      "outputHashing": "all",
-      "optimization": true,
-      "sourceMap": false,
-      "extractLicenses": true
-    },
-    "development": {
-      "optimization": false,
-      "extractLicenses": false,
-      "sourceMap": true
-    }
-  },
-  "defaultConfiguration": "production"
-},
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "bundle",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                }
+              ],
+              "outputHashing": "all",
+              "optimization": true,
+              "sourceMap": false,
+              "extractLicenses": true
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
