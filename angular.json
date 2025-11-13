@@ -11,10 +11,10 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist",
-            "browser": "src/main.ts",
+            "main": "src/main.ts",
             "index": "src/index.html",
             "tsConfig": "tsconfig.app.json",
             "assets": [
