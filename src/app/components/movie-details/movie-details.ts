@@ -49,9 +49,15 @@ export class MovieDetails implements OnInit {
     
     try {
       this.movie = await this.api.getMovieDetails(movieId);
-    } catch (err) {
-      this.error = 'Failed to load movie details. Please try again.';
+    } catch (err: any) {
       console.error('Error loading movie:', err);
+      if (err.message && err.message.includes('Unable to connect')) {
+        this.error = 'Unable to connect to the server. The backend may be down or unreachable. Please try again later.';
+      } else if (err.message && err.message.includes('404')) {
+        this.error = 'Movie not found. It may have been removed.';
+      } else {
+        this.error = err.message || 'Failed to load movie details. Please try again.';
+      }
     } finally {
       this.loading = false;
     }

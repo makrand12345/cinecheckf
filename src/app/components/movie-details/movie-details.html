@@ -122,8 +122,16 @@
         } @else if (error) {
             <div class="error-message">
                 <i class="fas fa-exclamation-triangle"></i>
+                <h3>Error Loading Movie</h3>
                 <p>{{ error }}</p>
-                <button class="retry-btn" (click)="retryLoadMovie()">Try Again</button>
+                <div class="error-actions">
+                    <button class="retry-btn" (click)="retryLoadMovie()">
+                        <i class="fas fa-redo"></i> Try Again
+                    </button>
+                    <button class="back-btn" (click)="goBack()">
+                        <i class="fas fa-arrow-left"></i> Go Back
+                    </button>
+                </div>
             </div>
         }
     </div>

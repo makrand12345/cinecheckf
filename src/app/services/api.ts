@@ -71,18 +71,28 @@ private apiUrl = 'https://cinecheckb.onrender.com/api/v1';
 
   // ===== MOVIES =====
   async getMovies(search?: string, genre?: string, year?: number, minRating?: number, sortBy?: string, featured?: boolean): Promise<MovieOut[]> {
-    const params = new URLSearchParams();
-    if (search) params.append('search', search);
-    if (genre) params.append('genre', genre);
-    if (year) params.append('year', year.toString());
-    if (minRating) params.append('min_rating', minRating.toString());
-    if (sortBy) params.append('sort_by', sortBy);
-    if (featured !== undefined) params.append('featured', featured.toString());
+    try {
+      const params = new URLSearchParams();
+      if (search) params.append('search', search);
+      if (genre) params.append('genre', genre);
+      if (year) params.append('year', year.toString());
+      if (minRating) params.append('min_rating', minRating.toString());
+      if (sortBy) params.append('sort_by', sortBy);
+      if (featured !== undefined) params.append('featured', featured.toString());
 
-    const url = `${this.apiUrl}/movies${params.toString() ? `?${params.toString()}` : ''}`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('Failed to fetch movies');
-    return await res.json();
+      const url = `${this.apiUrl}/movies${params.toString() ? `?${params.toString()}` : ''}`;
+      const res = await fetch(url);
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Failed to fetch movies: ${res.status} ${res.statusText} - ${errorText}`);
+      }
+      return await res.json();
+    } catch (error: any) {
+      if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+        throw new Error('Unable to connect to the server. Please check your internet connection and ensure the backend is running.');
+      }
+      throw error;
+    }
   }
 
   async getFeaturedMovies(): Promise<MovieOut[]> {
@@ -92,9 +102,19 @@ private apiUrl = 'https://cinecheckb.onrender.com/api/v1';
   }
 
   async getMovieDetails(movieId: string): Promise<MovieOut> {
-    const res = await fetch(`${this.apiUrl}/movies/${movieId}`);
-    if (!res.ok) throw new Error('Failed to fetch movie details');
-    return await res.json();
+    try {
+      const res = await fetch(`${this.apiUrl}/movies/${movieId}`);
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Failed to fetch movie details: ${res.status} ${res.statusText} - ${errorText}`);
+      }
+      return await res.json();
+    } catch (error: any) {
+      if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+        throw new Error('Unable to connect to the server. Please check your internet connection and ensure the backend is running.');
+      }
+      throw error;
+    }
   }
 
   async createMovie(movie: Partial<MovieOut>): Promise<MovieOut> {
