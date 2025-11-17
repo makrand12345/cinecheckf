@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   styleUrl: './header.css'
 })
 export class Header {
-  private router = inject(Router);
+  router = inject(Router);
   
   currentView = input<'home' | 'movies' | 'auth' | 'submit-movie' | 'profile' | 'admin' | 'search'>('home');
   isLoggedIn = input<boolean>(false);

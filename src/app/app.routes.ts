@@ -5,7 +5,8 @@ import { MovieDetails } from './components/movie-details/movie-details';
 import { Search } from './components/search/search';
 import { UserProfile } from './components/user-profile/user-profile';
 import { SubmitMovie } from './components/submit-movie/submit-movie';
-import { AdminPanel } from './components/admin/admin'; 
+import { AdminPanel } from './components/admin/admin';
+import { Watchlist } from './components/watchlist/watchlist';
 
 export const routes: Routes = [
   { path: '', component: MovieList },
@@ -14,6 +15,7 @@ export const routes: Routes = [
   { path: 'search', component: Search },
   { path: 'profile/:id', component: UserProfile },
   { path: 'submit-movie', component: SubmitMovie },
-  { path: 'admin', component: AdminPanel }, // Add admin route
+  { path: 'admin', component: AdminPanel },
+  { path: 'watchlist', component: Watchlist },
   { path: '**', redirectTo: '' }
 ];

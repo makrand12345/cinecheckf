@@ -1,31 +1,38 @@
-<div class="movie-card">
-  <div class="movie-poster">
-    <img *ngIf="movie.poster_url; else placeholder" [src]="movie.poster_url" [alt]="movie.title">
-    <ng-template #placeholder>
-      <div class="poster-placeholder">
-        <i class="fas fa-film"></i>
+<a [routerLink]="['/movies', movie.id]" class="movie-card-link">
+  <div class="movie-card">
+    <div class="movie-poster">
+      @if (movie.poster_url) {
+        <img [src]="movie.poster_url" [alt]="movie.title">
+      } @else {
+        <div class="poster-placeholder">
+          <i class="fas fa-film"></i>
+        </div>
+      }
+
+      <div class="movie-rating">
+        <i class="fas fa-star"></i>
+        <span>{{ getRating() }}</span>
       </div>
-    </ng-template>
+    </div>
 
-    <div class="movie-rating">
-      <i class="fas fa-star"></i>
-      <span>{{ getRating() }}</span>
+    <div class="movie-info">
+      <h3 class="movie-title">{{ movie.title }}</h3>
+      <p class="movie-description">{{ movie.description }}</p>
+
+      <div class="movie-meta">
+        @for (genre of movie.genres; track genre) {
+          <span class="genre-tag">{{ genre }}</span>
+        }
+      </div>
+
+      <div class="movie-details">
+        <span><i class="fas fa-clock"></i> {{ getDuration() }}</span>
+        @if (movie.release_date) {
+          <span><i class="fas fa-calendar"></i> {{ getYear(movie.release_date) }}</span>
+        }
+      </div>
     </div>
   </div>
-
-  <div class="movie-info">
-    <h3 class="movie-title">{{ movie.title }}</h3>
-    <p class="movie-description">{{ movie.description }}</p>
-
-    <div class="movie-meta">
-      <span *ngFor="let genre of movie.genres" class="genre-tag">{{ genre }}</span>
-    </div>
-
-    <div class="movie-details">
-      <span><i class="fas fa-clock"></i> {{ getDuration() }}</span>
-      <span><i class="fas fa-calendar"></i> {{ movie.release_date }}</span>
-    </div>
-  </div>
-</div>
+</a>
 
 

@@ -1,0 +1,37 @@
+<div class="watchlist-container">
+    <div class="container">
+        <div class="watchlist-header">
+            <h1><i class="fas fa-heart"></i> My Watchlist</h1>
+            <p>Movies you've saved to watch later</p>
+        </div>
+
+        @if (loading) {
+            <div class="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading your watchlist...</p>
+            </div>
+        } @else if (error) {
+            <div class="error-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>{{ error }}</p>
+                <button class="retry-btn" (click)="loadWatchlist()">Try Again</button>
+            </div>
+        } @else if (movies.length === 0) {
+            <div class="empty-watchlist">
+                <i class="fas fa-heart-broken"></i>
+                <h2>Your watchlist is empty</h2>
+                <p>Start adding movies to your watchlist to see them here!</p>
+                <button class="browse-btn" (click)="router.navigate(['/'])">
+                    <i class="fas fa-film"></i> Browse Movies
+                </button>
+            </div>
+        } @else {
+            <div class="movies-grid">
+                @for (movie of movies; track movie.id) {
+                    <app-movie-card [movie]="movie"></app-movie-card>
+                }
+            </div>
+        }
+    </div>
+</div>
+

@@ -70,14 +70,24 @@ private apiUrl = 'https://cinecheckb.onrender.com/api/v1';
   }
 
   // ===== MOVIES =====
-  async getMovies(search?: string, genre?: string): Promise<MovieOut[]> {
+  async getMovies(search?: string, genre?: string, year?: number, minRating?: number, sortBy?: string, featured?: boolean): Promise<MovieOut[]> {
     const params = new URLSearchParams();
     if (search) params.append('search', search);
     if (genre) params.append('genre', genre);
+    if (year) params.append('year', year.toString());
+    if (minRating) params.append('min_rating', minRating.toString());
+    if (sortBy) params.append('sort_by', sortBy);
+    if (featured !== undefined) params.append('featured', featured.toString());
 
     const url = `${this.apiUrl}/movies${params.toString() ? `?${params.toString()}` : ''}`;
     const res = await fetch(url);
     if (!res.ok) throw new Error('Failed to fetch movies');
+    return await res.json();
+  }
+
+  async getFeaturedMovies(): Promise<MovieOut[]> {
+    const res = await fetch(`${this.apiUrl}/movies/featured`);
+    if (!res.ok) throw new Error('Failed to fetch featured movies');
     return await res.json();
   }
 
@@ -97,19 +107,63 @@ private apiUrl = 'https://cinecheckb.onrender.com/api/v1';
     return await res.json();
   }
 
-  async rateMovie(movieId: string, rating: number, review?: string): Promise<RatingOut> {
-    const res = await fetch(`${this.apiUrl}/movies/${movieId}/rate`, {
+  // ===== REVIEWS =====
+  async createReview(movieId: string, rating: number, reviewText?: string, userId?: string, username?: string): Promise<any> {
+    const res = await fetch(`${this.apiUrl}/reviews/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ rating, review }),
+      body: JSON.stringify({ movie_id: movieId, rating, review_text: reviewText }),
     });
-    if (!res.ok) throw new Error('Failed to rate movie');
+    if (!res.ok) throw new Error('Failed to create review');
     return await res.json();
   }
 
-  async getMovieRatings(movieId: string): Promise<RatingOut[]> {
-    const res = await fetch(`${this.apiUrl}/movies/${movieId}/ratings`);
-    if (!res.ok) throw new Error('Failed to fetch ratings');
+  async getMovieReviews(movieId: string): Promise<any[]> {
+    const res = await fetch(`${this.apiUrl}/reviews/movie/${movieId}`);
+    if (!res.ok) throw new Error('Failed to fetch reviews');
+    return await res.json();
+  }
+
+  async getUserReviews(userId: string): Promise<any[]> {
+    const res = await fetch(`${this.apiUrl}/reviews/user/${userId}`);
+    if (!res.ok) throw new Error('Failed to fetch user reviews');
+    return await res.json();
+  }
+
+  async deleteReview(reviewId: string, userId?: string): Promise<any> {
+    const res = await fetch(`${this.apiUrl}/reviews/${reviewId}`, {
+      method: 'DELETE',
+    });
+    if (!res.ok) throw new Error('Failed to delete review');
+    return await res.json();
+  }
+
+  // ===== WATCHLIST =====
+  async addToWatchlist(userId: string, movieId: string): Promise<any> {
+    const res = await fetch(`${this.apiUrl}/watchlist/${userId}/add/${movieId}`, {
+      method: 'POST',
+    });
+    if (!res.ok) throw new Error('Failed to add to watchlist');
+    return await res.json();
+  }
+
+  async removeFromWatchlist(userId: string, movieId: string): Promise<any> {
+    const res = await fetch(`${this.apiUrl}/watchlist/${userId}/remove/${movieId}`, {
+      method: 'DELETE',
+    });
+    if (!res.ok) throw new Error('Failed to remove from watchlist');
+    return await res.json();
+  }
+
+  async getWatchlist(userId: string): Promise<MovieOut[]> {
+    const res = await fetch(`${this.apiUrl}/watchlist/${userId}`);
+    if (!res.ok) throw new Error('Failed to fetch watchlist');
+    return await res.json();
+  }
+
+  async checkWatchlist(userId: string, movieId: string): Promise<{ in_watchlist: boolean }> {
+    const res = await fetch(`${this.apiUrl}/watchlist/${userId}/check/${movieId}`);
+    if (!res.ok) return { in_watchlist: false };
     return await res.json();
   }
 

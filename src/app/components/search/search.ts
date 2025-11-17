@@ -18,7 +18,25 @@ export class Search implements OnInit {
   loading = false;
   searchQuery = '';
   selectedGenre = '';
-  genres: string[] = ['Action', 'Comedy', 'Drama', 'Horror', 'Sci-Fi', 'Romance', 'Thriller'];
+  selectedYear: number | null = null;
+  minRating: number | null = null;
+  sortBy = 'created_at';
+  
+  genres: string[] = ['Action', 'Comedy', 'Drama', 'Horror', 'Sci-Fi', 'Romance', 'Thriller', 'Adventure', 'Animation', 'Crime', 'Fantasy', 'Mystery'];
+  years: number[] = [];
+  sortOptions = [
+    { value: 'created_at', label: 'Newest First' },
+    { value: 'rating', label: 'Highest Rated' },
+    { value: 'title', label: 'Title A-Z' }
+  ];
+
+  constructor() {
+    // Generate years from 2024 down to 1950
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear; year >= 1950; year--) {
+      this.years.push(year);
+    }
+  }
 
   async ngOnInit() {
     await this.loadMovies();
@@ -28,7 +46,14 @@ export class Search implements OnInit {
     this.loading = true;
     
     try {
-      this.movies = await this.api.getMovies(this.searchQuery, this.selectedGenre);
+      this.movies = await this.api.getMovies(
+        this.searchQuery || undefined,
+        this.selectedGenre || undefined,
+        this.selectedYear || undefined,
+        this.minRating || undefined,
+        this.sortBy,
+        undefined
+      );
     } catch (err) {
       console.error('Error searching movies:', err);
     } finally {
@@ -41,6 +66,15 @@ export class Search implements OnInit {
   }
 
   onFilter() {
+    this.loadMovies();
+  }
+
+  clearFilters() {
+    this.searchQuery = '';
+    this.selectedGenre = '';
+    this.selectedYear = null;
+    this.minRating = null;
+    this.sortBy = 'created_at';
     this.loadMovies();
   }
 

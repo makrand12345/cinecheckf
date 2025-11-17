@@ -15,11 +15,13 @@ export class MovieList implements OnInit {
   private cd = inject(ChangeDetectorRef);
 
   movies: MovieOut[] = [];
+  featuredMovies: MovieOut[] = [];
   loading = false;
+  loadingFeatured = false;
   error = '';
 
   async ngOnInit() {
-    await this.loadMovies();
+    await Promise.all([this.loadMovies(), this.loadFeaturedMovies()]);
   }
 
   async loadMovies() {
@@ -37,6 +39,17 @@ export class MovieList implements OnInit {
       this.cd.detectChanges();
     }
   }
+
+  async loadFeaturedMovies() {
+    this.loadingFeatured = true;
+    try {
+      this.featuredMovies = await this.api.getFeaturedMovies();
+    } catch (err) {
+      console.error('Error loading featured movies:', err);
+      this.featuredMovies = [];
+    } finally {
+      this.loadingFeatured = false;
+      this.cd.detectChanges();
+    }
+  }
 }
-
-

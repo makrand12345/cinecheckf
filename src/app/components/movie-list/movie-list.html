@@ -1,29 +1,58 @@
 <div class="movie-list-container">
   <div class="container">
+    <!-- Featured Movies Section -->
+    @if (featuredMovies.length > 0) {
+      <div class="featured-section">
+        <div class="section-header">
+          <h2><i class="fas fa-star"></i> Featured Movies</h2>
+          <p>Top-rated and handpicked films</p>
+        </div>
+        @if (loadingFeatured) {
+          <div class="loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading featured movies...</p>
+          </div>
+        } @else {
+          <div class="featured-grid">
+            @for (movie of featuredMovies; track movie.id) {
+              <app-movie-card [movie]="movie"></app-movie-card>
+            }
+          </div>
+        }
+      </div>
+    }
 
+    <!-- All Movies Section -->
     <div class="section-header">
-      <h2>Featured Movies</h2>
+      <h2>All Movies</h2>
       <p>Discover and rate your favorite films</p>
     </div>
 
-    <ng-container *ngIf="loading; else moviesContent">
+    @if (loading) {
       <div class="loading">
         <i class="fas fa-spinner fa-spin"></i>
         <p>Loading movies...</p>
       </div>
-    </ng-container>
-
-    <ng-template #moviesContent>
-      <div *ngIf="error" class="error-message">
+    } @else if (error) {
+      <div class="error-message">
         <i class="fas fa-exclamation-triangle"></i>
         <p>{{ error }}</p>
         <button class="retry-btn" (click)="loadMovies()">Try Again</button>
       </div>
-
-      <div class="movies-grid" *ngIf="!error">
-        <app-movie-card *ngFor="let movie of movies" [movie]="movie"></app-movie-card>
+    } @else {
+      <div class="movies-grid">
+        @for (movie of movies; track movie.id) {
+          <app-movie-card [movie]="movie"></app-movie-card>
+        }
       </div>
-    </ng-template>
-
+      
+      @if (movies.length === 0) {
+        <div class="no-movies">
+          <i class="fas fa-film"></i>
+          <h3>No movies found</h3>
+          <p>Check back later for new releases!</p>
+        </div>
+      }
+    }
   </div>
 </div>
