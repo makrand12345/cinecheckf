@@ -18,7 +18,7 @@ export class MovieDetails implements OnInit {
   
   movie: any = null;
   reviews: any[] = [];
-  loading = false;
+  loading = true; // Start with loading true
   error = '';
   selectedRating = 0;
   reviewText = '';
@@ -27,37 +27,60 @@ export class MovieDetails implements OnInit {
   inWatchlist = false;
   loadingWatchlist = false;
 
-  async ngOnInit() {
-    this.movieId = this.route.snapshot.paramMap.get('id') || '';
-    const savedUser = sessionStorage.getItem('cinecheck_user');
-    if (savedUser) {
-      this.currentUser = JSON.parse(savedUser);
-    }
-    
-    if (this.movieId) {
-      await this.loadMovie(this.movieId);
-      await this.loadReviews();
+  ngOnInit() {
+    // Use paramMap observable to handle route changes
+    this.route.paramMap.subscribe(params => {
+      this.movieId = params.get('id') || '';
+      console.log('Movie ID from route:', this.movieId);
+      
+      const savedUser = sessionStorage.getItem('cinecheck_user');
+      if (savedUser) {
+        this.currentUser = JSON.parse(savedUser);
+      }
+      
+      if (this.movieId) {
+        this.loadMovieData();
+      } else {
+        this.loading = false;
+        this.error = 'No movie ID provided';
+      }
+    });
+  }
+
+  async loadMovieData() {
+    try {
+      await Promise.all([
+        this.loadMovie(this.movieId),
+        this.loadReviews()
+      ]);
+      
       if (this.currentUser) {
         await this.checkWatchlistStatus();
       }
+    } catch (err) {
+      console.error('Error loading movie data:', err);
     }
   }
 
   async loadMovie(movieId: string) {
     this.loading = true;
     this.error = '';
+    this.movie = null; // Reset movie
     
     try {
+      console.log('Loading movie with ID:', movieId);
       this.movie = await this.api.getMovieDetails(movieId);
+      console.log('Movie loaded successfully:', this.movie);
     } catch (err: any) {
       console.error('Error loading movie:', err);
       if (err.message && err.message.includes('Unable to connect')) {
         this.error = 'Unable to connect to the server. The backend may be down or unreachable. Please try again later.';
-      } else if (err.message && err.message.includes('404')) {
+      } else if (err.message && err.message.includes('404') || err.message && err.message.includes('not found')) {
         this.error = 'Movie not found. It may have been removed.';
       } else {
         this.error = err.message || 'Failed to load movie details. Please try again.';
       }
+      this.movie = null;
     } finally {
       this.loading = false;
     }
