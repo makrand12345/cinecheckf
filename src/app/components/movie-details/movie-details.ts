@@ -1,8 +1,11 @@
 import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common'; // <-- added
 
 @Component({
   selector: 'app-movie-details',
+  standalone: true,                // <-- added
+  imports: [CommonModule],         // <-- added to enable *ngIf / Common directives
   templateUrl: './movie-details.html'
 })
 export class MovieDetailsComponent implements OnInit {
@@ -64,3 +67,6 @@ export class MovieDetailsComponent implements OnInit {
     }
   }
 }
+
+// export alias so existing app.routes.ts import { MovieDetails } works
+export { MovieDetailsComponent as MovieDetails };
