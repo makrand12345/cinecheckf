@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -10,7 +10,7 @@ export class MovieDetailsComponent implements OnInit {
   isLoading = true;
   error: string | null = null;
 
-  constructor(private route: ActivatedRoute, private cd: ChangeDetectorRef) {}
+  constructor(private route: ActivatedRoute, private cd: ChangeDetectorRef, private ngZone: NgZone) {}
 
   ngOnInit() {
     this.loadMovie();
@@ -30,17 +30,24 @@ export class MovieDetailsComponent implements OnInit {
     }
 
     try {
-      // Use the live backend URL used by the app
       const resp = await fetch(`https://cinecheckb.onrender.com/api/v1/movies/${id}`);
       if (!resp.ok) throw new Error(`${resp.status} ${resp.statusText}`);
-      this.movie = await resp.json();
+      const data = await resp.json();
+
+      // update inside Angular zone so change detection runs reliably
+      this.ngZone.run(() => {
+        this.movie = data;
+        this.error = null;
+        this.isLoading = false;
+        this.cd.detectChanges();
+      });
     } catch (err) {
       console.error('Failed loading movie', err);
-      this.error = 'Failed to load movie';
-    } finally {
-      this.isLoading = false;
-      // ensure the template updates
-      this.cd.detectChanges();
+      this.ngZone.run(() => {
+        this.error = 'Failed to load movie';
+        this.isLoading = false;
+        this.cd.detectChanges();
+      });
     }
   }
 }
