@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -10,7 +10,7 @@ export class MovieDetailsComponent implements OnInit {
   isLoading = true;
   error: string | null = null;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.loadMovie();
@@ -25,6 +25,7 @@ export class MovieDetailsComponent implements OnInit {
     if (!id) {
       this.error = 'Invalid movie id';
       this.isLoading = false;
+      this.cd.detectChanges();
       return;
     }
 
@@ -38,6 +39,8 @@ export class MovieDetailsComponent implements OnInit {
       this.error = 'Failed to load movie';
     } finally {
       this.isLoading = false;
+      // ensure the template updates
+      this.cd.detectChanges();
     }
   }
 }
