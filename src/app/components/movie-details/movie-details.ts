@@ -13,15 +13,19 @@ export class MovieDetailsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private cd: ChangeDetectorRef, private ngZone: NgZone) {}
 
   ngOnInit() {
+    console.log('[MovieDetails] ngOnInit');
     this.loadMovie();
   }
 
   async loadMovie() {
+    console.log('[MovieDetails] loadMovie started');
     this.isLoading = true;
     this.error = null;
     this.movie = null;
 
     const id = this.route.snapshot.paramMap.get('id');
+    console.log('[MovieDetails] Movie ID from route:', id);
+    
     if (!id) {
       this.error = 'Invalid movie id';
       this.isLoading = false;
@@ -30,21 +34,30 @@ export class MovieDetailsComponent implements OnInit {
     }
 
     try {
-      const resp = await fetch(`https://cinecheckb.onrender.com/api/v1/movies/${id}`);
+      const url = `https://cinecheckb.onrender.com/api/v1/movies/${id}`;
+      console.log('[MovieDetails] Fetching:', url);
+      
+      const resp = await fetch(url);
+      console.log('[MovieDetails] Response status:', resp.status);
+      
       if (!resp.ok) throw new Error(`${resp.status} ${resp.statusText}`);
+      
       const data = await resp.json();
+      console.log('[MovieDetails] Data received:', data);
 
-      // update inside Angular zone so change detection runs reliably
+      // Update component properties inside Angular zone
       this.ngZone.run(() => {
+        console.log('[MovieDetails] Inside ngZone.run, setting movie and isLoading=false');
         this.movie = data;
         this.error = null;
         this.isLoading = false;
         this.cd.detectChanges();
+        console.log('[MovieDetails] Component state:', { movie: this.movie, isLoading: this.isLoading });
       });
     } catch (err) {
-      console.error('Failed loading movie', err);
+      console.error('[MovieDetails] Error:', err);
       this.ngZone.run(() => {
-        this.error = 'Failed to load movie';
+        this.error = `Failed to load movie: ${err}`;
         this.isLoading = false;
         this.cd.detectChanges();
       });
