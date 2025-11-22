@@ -1,15 +1,16 @@
-<div *ngIf="isLoading" class="loading-overlay">
+<!-- show movie when present -->
+<div *ngIf="movie" class="movie-details-container" data-testid="movie-details">
+  <h1 data-testid="movie-title">{{ movie?.title }}</h1>
+  <p>{{ movie?.description }}</p>
+  <p *ngIf="movie?.release_date">Release: {{ movie?.release_date }}</p>
+  <!-- more fields -->
+</div>
+
+<!-- show overlay only when no movie yet and still loading -->
+<div *ngIf="!movie && isLoading" class="loading-overlay">
   <div class="spinner">Loading movie details...</div>
 </div>
 
 <div *ngIf="!isLoading && error" class="error-message">
   {{ error }}
-</div>
-
-<div *ngIf="!isLoading && movie" class="movie-details-container" data-testid="movie-details">
-  <h1 data-testid="movie-title">{{ movie?.title }}</h1>
-  <p>{{ movie?.description }}</p>
-  <!-- safe access for other fields -->
-  <p *ngIf="movie?.release_date">Release: {{ movie?.release_date }}</p>
-  <!-- more fields -->
 </div>
