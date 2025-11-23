@@ -15,6 +15,12 @@ body {
   min-height: calc(100vh - 140px);
 }
 
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
 .footer {
   background: #ffd700;
   color: #333333;
@@ -23,33 +29,31 @@ body {
   margin-top: 2rem;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* add basic movie details styles */
+.movie-details-container { max-width: 1000px; margin: 32px auto; padding: 24px; background: #fff; color:#222; }
+.movie-header { display:flex; gap:20px; align-items:flex-start; }
+.poster { width:160px; border-radius:6px; object-fit:cover; box-shadow:0 4px 10px rgba(0,0,0,.08); }
+.meta h1 { margin:0 0 8px; font-size:32px; }
+.desc { margin:8px 0 12px; color:#444; }
+.muted { color:#666; font-size:14px; margin-bottom:12px; }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #ffffff;
-  color: #333333;
-  line-height: 1.6;
-}
+.actions { display:flex; gap:12px; align-items:center; margin-top:8px; }
+.btn { border:1px solid #e6e6e6; padding:8px 12px; border-radius:6px; cursor:pointer; background:#fff; }
+.btn-ghost { background:transparent; border:1px solid rgba(0,0,0,0.06); }
+.btn .liked, .liked { color: #e25555; }
+.saved { color:#f1c40f; }
 
-.main-content {
-  min-height: calc(100vh - 140px);
-}
+.rating { display:flex; align-items:center; gap:8px; }
+.stars { display:inline-flex; gap:4px; }
+.star { background:transparent; border:none; cursor:pointer; font-size:20px; color:#ccc; padding:2px 4px; }
+.star.active { color:#f5b301; }
+.avg { font-size:14px; color:#333; margin-right:8px; }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
+.loading-overlay { position:relative; padding:40px; text-align:center; }
+.spinner { color:#777; }
 
-.footer {
-  background-color: #ffd700;
-  color: #333333;
-  text-align: center;
-  padding: 1rem 0;
-  margin-top: 2rem;
+/* responsive */
+@media (max-width:720px) {
+  .movie-header { flex-direction:column; align-items:center; text-align:center; }
+  .poster { width:200px; }
 }

@@ -1,14 +1,47 @@
-<!-- show movie when present -->
-<div *ngIf="movie" class="movie-details-container" data-testid="movie-details">
-  <h1 data-testid="movie-title">{{ movie?.title }}</h1>
-  <p>{{ movie?.description }}</p>
-  <p *ngIf="movie?.release_date">Release: {{ movie?.release_date }}</p>
-  <!-- more fields -->
-</div>
-
 <!-- show overlay only when no movie yet and still loading -->
 <div *ngIf="!movie && isLoading" class="loading-overlay">
   <div class="spinner">Loading movie details...</div>
+</div>
+
+<div *ngIf="isLoading" class="loading-overlay">
+  <div class="spinner">Loading movie details...</div>
+</div>
+
+<div *ngIf="movie" class="movie-details-container" data-testid="movie-details">
+  <div class="movie-header">
+    <img *ngIf="movie?.poster_url" [src]="movie.poster_url" alt="{{ movie?.title }}" class="poster"/>
+    <div class="meta">
+      <h1 data-testid="movie-title">{{ movie?.title }}</h1>
+      <p class="desc">{{ movie?.description }}</p>
+      <p class="muted">Release: {{ movie?.release_date }}</p>
+
+      <div class="actions">
+        <button class="btn btn-ghost" (click)="toggleLike()">
+          <span [class.liked]="userLiked">♥</span> Like
+        </button>
+
+        <button class="btn btn-ghost" (click)="toggleSave()">
+          <span [class.saved]="userSaved">🔖</span> Save
+        </button>
+
+        <div class="rating">
+          <span class="avg">Avg: {{ avgRating ?? '—' }}</span>
+          <div class="stars">
+            <button *ngFor="let s of [1,2,3,4,5]" class="star"
+                    [class.active]="s <= (userRating || Math.round(avgRating || 0))"
+                    (click)="submitRating(s)">
+              ★
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- you can add more fields below -->
+  <div class="movie-body">
+    <!-- e.g. cast, director, trailer link -->
+  </div>
 </div>
 
 <div *ngIf="!isLoading && error" class="error-message">
